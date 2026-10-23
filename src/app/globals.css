@@ -99,3 +99,12 @@ body {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Search filters: collapsible on mobile, always expanded on desktop. */
+@media (min-width: 1024px) {
+  .filters-details::details-content {
+    content-visibility: visible;
+    display: block;
+    block-size: auto;
+  }
+}

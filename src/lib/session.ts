@@ -1,17 +1,27 @@
 import "server-only";
+import { notFound, redirect } from "next/navigation";
+import { getCurrentUser, type CurrentUser } from "@/server/auth";
+import { loginUrl } from "./safe-redirect";
 
-// Single place the UI reads the signed-in user from. Wraps db-agent's auth
-// helpers so pages don't depend on their exact shape.
+// The UI's single entry point for "who is signed in". Role always comes from
+// the database (db-agent's getCurrentUser), never from the client.
 
-export type Role = "customer" | "admin";
-export interface SessionUser {
-  id: string;
-  name: string;
-  email: string;
-  role: Role;
-}
+export type SessionUser = CurrentUser;
 
 export async function getSessionUser(): Promise<SessionUser | null> {
-  // TODO(app-agent): switch to db-agent's getCurrentUser() from @/server/auth/session when it lands.
-  return null;
+  return getCurrentUser();
+}
+
+/** For pages: redirects to login (returning to `path`) when signed out. */
+export async function requirePageUser(path: string): Promise<SessionUser> {
+  const user = await getCurrentUser();
+  if (!user) redirect(loginUrl(path));
+  return user;
+}
+
+/** For admin pages: login redirect when signed out, 404 for non-admins (hides the area). */
+export async function requirePageAdmin(path: string): Promise<SessionUser> {
+  const user = await requirePageUser(path);
+  if (user.role !== "admin") notFound();
+  return user;
 }

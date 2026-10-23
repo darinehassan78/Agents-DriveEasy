@@ -149,7 +149,7 @@ function SignOutButton() {
         })
       }
     >
-      {pending ? "Signing out…" : "Sign out"}
+      {pending ? "Logging out…" : "Log out"}
     </button>
   );
 }

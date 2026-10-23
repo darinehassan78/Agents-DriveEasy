@@ -26,6 +26,7 @@ export function SearchForm({
   layout = "stacked",
   submitLabel = "Search cars",
   hidden,
+  lockPickup,
 }: {
   branches: BranchOption[];
   initial: { pickupBranch?: string; returnBranch?: string; pickupAt: string; returnAt: string };
@@ -35,6 +36,8 @@ export function SearchForm({
   layout?: "stacked" | "bar";
   submitLabel?: string;
   hidden?: Record<string, string | undefined>;
+  /** Pick-up branch can't be changed (vehicle pages: cars are rented from their home branch). */
+  lockPickup?: boolean;
 }) {
   const id = useId();
   const router = useRouter();
@@ -92,10 +95,12 @@ export function SearchForm({
             name="pickupBranch"
             value={pickupBranch}
             onChange={(e) => setPickupBranch(e.target.value)}
+            disabled={lockPickup}
             required
           >
             {branchOptions}
           </Select>
+          {lockPickup && <input type="hidden" name="pickupBranch" value={pickupBranch} />}
         </div>
         <Checkbox
           label="Return to a different branch"
