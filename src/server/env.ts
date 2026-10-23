@@ -18,13 +18,14 @@ const schema = z.object({
   FAKE_PAYMENT_DUPLICATE_WEBHOOKS: z.stringbool().default(false),
   STRIPE_SECRET_KEY: z.string().optional(),
 
-  STORAGE_DRIVER: z.enum(["local", "s3"]).default("local"),
+  STORAGE_DRIVER: z.enum(["local", "s3", "vercel-blob"]).default("local"),
   LOCAL_UPLOADS_DIR: z.string().default("storage/uploads"),
   S3_BUCKET: z.string().optional(),
   S3_REGION: z.string().optional(),
   S3_ENDPOINT: z.string().optional(),
   S3_ACCESS_KEY_ID: z.string().optional(),
   S3_SECRET_ACCESS_KEY: z.string().optional(),
+  BLOB_READ_WRITE_TOKEN: z.string().optional(),
 
   SCHEDULER: z.enum(["local", "cloud-cron"]).default("local"),
   CRON_SECRET: z.string().min(16),
