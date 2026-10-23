@@ -20,7 +20,7 @@ Add tasks you discover. Bugs go in `docs/BUGS.md` and get a task here.
 - [ ] D14 README: local setup, env vars, migrations, testing, Vercel deployment
 
 ## App (app-agent)
-- [ ] A1 Design system, layout, navigation, responsive shell, loading/error/empty states
+- [ ] A1 Design system, layout, navigation, responsive shell, loading/error/empty states — DOING (app-agent)
 - [ ] A2 Login / register / logout / profile (incl. driver details + licence upload)
 - [ ] A3 Home with search (pick-up/return branch, dates and times)
 - [ ] A4 Search results with filters (category, transmission, seats, fuel, price)
@@ -33,7 +33,7 @@ Add tasks you discover. Bugs go in `docs/BUGS.md` and get a task here.
 - [ ] A11 Mobile + desktop polish, accessibility pass
 
 ## QA (qa-agent)
-- [ ] Q1 Test plan + harness (test DB reset, seeding, helpers)
+- [ ] Q1 Test plan + harness (test DB reset, seeding, helpers) — DOING (qa-agent)
 - [ ] Q2 Auth: register, login, logout, authorisation, admin permissions
 - [ ] Q3 Search, branches, date ranges, filters, availability calendars
 - [ ] Q4 Full rental: search → payment → voucher → check-out → return

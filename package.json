@@ -16,7 +16,10 @@
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio",
     "job": "tsx scripts/run-job.mts",
-    "jobs:release-expired-holds": "tsx scripts/run-job.mts release-expired-holds"
+    "jobs:release-expired-holds": "tsx scripts/run-job.mts release-expired-holds",
+    "test:integration": "vitest run --config tests/vitest.config.mts",
+    "test:db:reset": "tsx tests/support/reset-db.mts",
+    "test:all": "vitest run && vitest run --config tests/vitest.config.mts && playwright test"
   },
   "dependencies": {
     "better-auth": "^1.7.12",
