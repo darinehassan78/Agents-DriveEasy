@@ -575,7 +575,10 @@ export async function handlePaymentWebhook(rawBody: string, signature: string | 
   });
 
   log.info("webhook handled", { provider: provider.name, eventId: event.id, type: event.type, status: outcome.status });
-  if (outcome.reservationId && outcome.confirm?.needsCompensation) {
+  // Only money *arriving* (a success or a new hold) for a dead booking needs undoing;
+  // refund/release events are the result of undoing it.
+  const arriving = event.type === "payment.succeeded" || event.type === "deposit.held";
+  if (outcome.reservationId && outcome.confirm?.needsCompensation && arriving) {
     await compensateDeadReservation(outcome.reservationId).catch((err) =>
       log.error("compensation failed", { reservationId: outcome.reservationId, err }),
     );

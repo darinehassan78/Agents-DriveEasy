@@ -117,7 +117,7 @@ export const searchInputSchema = z
     sort: z.enum(["price_asc", "price_desc", "seats_desc", "name"]).default("price_asc"),
   })
   .refine((q) => q.returnAt.getTime() > q.pickupAt.getTime(), { message: "Return must be after pick-up", path: ["returnAt"] })
-  .refine((q) => rentalDays(q.pickupAt, q.returnAt) <= MAX_RENTAL_DAYS, {
+  .refine((q) => q.returnAt.getTime() <= q.pickupAt.getTime() || rentalDays(q.pickupAt, q.returnAt) <= MAX_RENTAL_DAYS, {
     message: `Rentals are limited to ${MAX_RENTAL_DAYS} days`,
     path: ["returnAt"],
   });

@@ -681,7 +681,7 @@ export async function cancelReservation(
   });
 
   const refundedFils = await refundReservation(id, result.refundFils, `cancel:${id}`, actor, "cancellation");
-  const depositReleased = (await releaseDeposit(id, actor, "cancellation")) !== null;
+  await releaseDeposit(id, actor, "cancellation");
   // Cancel any payment still waiting for customer action so it can't complete later.
   await cancelPendingProviderPayments(id);
 
@@ -694,7 +694,8 @@ export async function cancelReservation(
     }
     return row.status;
   });
-  return { status, feeFils: result.feeFils, refundFils: result.refundFils, refundedFils, depositReleased };
+  const [after] = await db().select({ depositStatus: reservations.depositStatus }).from(reservations).where(eq(reservations.id, id));
+  return { status, feeFils: result.feeFils, refundFils: result.refundFils, refundedFils, depositReleased: after.depositStatus === "RELEASED" };
 }
 
 async function cancelPendingProviderPayments(reservationId: string) {

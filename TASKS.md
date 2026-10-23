@@ -7,30 +7,31 @@ Add tasks you discover. Bugs go in `docs/BUGS.md` and get a task here.
 - [x] D1 Schema + migrations: users (Better Auth compatible), driver_profiles, branches, vehicle_categories, vehicles, vehicle_features, vehicle_feature_map, pricing_rules, extras, reservations, reservation_extras, payments, deposits, rental_agreements, damage_reports, maintenance_blocks, audit_logs. FKs, checks, indexes, cascades, unique plate/VIN/branch code. — DONE (db-agent)
 - [x] D2 Overlap exclusion constraint covering reservations + maintenance blocks (see docs/TEAM.md) — DONE (db-agent)
 - [x] D3 Better Auth server config (email + password, roles) on the Drizzle schema — DONE (db-agent)
-- [ ] D4 Pricing engine (rates, days, extras, one-way fee, VAT, deposit, late return) + unit tests — DOING (db-agent): code landed, tests in progress
+- [x] D4 Pricing engine (rates, days, extras, one-way fee, VAT, deposit, late return) + unit tests — DONE (db-agent)
 - [x] D5 Availability search + per-vehicle availability calendar queries — DONE (db-agent)
-- [ ] D6 Reserve transaction (lock vehicle, expire stale holds, check, hold, price, create PENDING), idempotency keys — DOING (db-agent): code landed, tests in progress
-- [ ] D7 Payment + deposit flow: confirm only after verified payment and deposit hold; webhook route with signature check and dedupe; refund, deposit release/capture — DOING (db-agent): code landed, tests in progress
-- [ ] D8 Modify dates / cancel per policy (transactional) — DOING (db-agent): code landed, tests in progress
-- [ ] D9 Check-out / check-in: rental agreement with mileage + fuel, late charges, damage reports — DOING (db-agent): code landed, tests in progress
-- [ ] D10 Idempotent release-expired-holds endpoint protected by CRON_SECRET + local command + vercel.json cron — DOING (db-agent): code landed, tests in progress
+- [x] D6 Reserve transaction (lock vehicle, expire stale holds, check, hold, price, create PENDING), idempotency keys — DONE (db-agent)
+- [x] D7 Payment + deposit flow: confirm only after verified payment and deposit hold; webhook route with signature check and dedupe; refund, deposit release/capture — DONE (db-agent)
+- [x] D8 Modify dates / cancel per policy (transactional) — DONE (db-agent)
+- [x] D9 Check-out / check-in: rental agreement with mileage + fuel, late charges, damage reports — DONE (db-agent)
+- [x] D10 Idempotent release-expired-holds endpoint protected by CRON_SECRET + local command + vercel.json cron — DONE (db-agent)
 - [x] D11 Seed data: branches, categories, vehicles, features, extras, pricing rules, future reservations, admin + customer users — DONE (db-agent)
 - [x] D12 Audit logs for admin and reservation state changes; structured server logs — DONE (db-agent)
-- [ ] D13 Real-provider adapters behind interfaces: Stripe (test mode), Vercel Blob storage (coordinate with app-agent). Settings-only switch. — DOING (db-agent): code landed, tests in progress
-- [ ] D14 README: local setup, env vars, migrations, testing, Vercel deployment — DOING (db-agent): code landed, tests in progress
+- [x] D13 Real-provider adapters behind interfaces: Stripe (test mode), Vercel Blob storage (coordinate with app-agent). Settings-only switch. — DONE (db-agent): Stripe test-mode adapter (src/server/payments/stripe.ts, mocked-HTTP tests), PAYMENT_PROVIDER switch; Blob storage driver by app-agent. Live Stripe verification BLOCKED (no cloud accounts).
+- [x] D14 README: local setup, env vars, migrations, testing, Vercel deployment — DONE (db-agent); Vercel steps written but BLOCKED until accounts exist
 
 ## App (app-agent)
-- [ ] A1 Design system, layout, navigation, responsive shell, loading/error/empty states — DOING (app-agent)
-- [ ] A2 Login / register / logout / profile (incl. driver details + licence upload)
-- [ ] A3 Home with search (pick-up/return branch, dates and times)
-- [ ] A4 Search results with filters (category, transmission, seats, fuel, price)
-- [ ] A5 Vehicle details with availability calendar; branch pages
+- [x] A1 Design system, layout, navigation, responsive shell, loading/error/empty states — DONE (app-agent)
+- [ ] A2 Login / register / logout / profile (incl. driver details + licence upload) — DOING (app-agent)
+- [ ] A3 Home with search (pick-up/return branch, dates and times) — DOING (app-agent)
+- [ ] A4 Search results with filters (category, transmission, seats, fuel, price) — DOING (app-agent)
+- [ ] A5 Vehicle details with availability calendar; branch pages — DOING (app-agent)
 - [ ] A6 Booking flow: dates, extras, price breakdown, driver details + licence, checkout, payment
 - [ ] A7 Pick-up voucher with reference + QR code
 - [ ] A8 My rentals: view, modify dates, cancel per policy
 - [ ] A9 Admin: branches, fleet, pricing, reservations, check-out, check-in, damage reports
-- [ ] A10 Private file route for licence/damage images (owner + admin only); storage driver for Vercel Blob
+- [ ] A10 Private file route for licence/damage images (owner + admin only); storage driver for Vercel Blob — DOING (app-agent)
 - [ ] A11 Mobile + desktop polish, accessibility pass
+- [ ] A12 Motion system per advanced-web-animation skill (tokens on :root, reduced motion, no-JS visible, transform/opacity only) — DOING (app-agent)
 
 ## QA (qa-agent)
 - [x] Q1 Test plan + harness (test DB reset, seeding, helpers) — DONE (qa-agent): tests/PLAN.md, `pnpm test:db:reset`, `pnpm test:integration`, e2e on :3100 vs driveeasy_test
