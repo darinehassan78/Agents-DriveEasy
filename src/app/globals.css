@@ -1,26 +1,101 @@
 @import "tailwindcss";
 
+/* DriveEasy design tokens. Components use the semantic names (bg-surface,
+   text-muted, border-line, bg-brand ...) so light/dark stay in one place. */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --bg: #f6f7f9;
+  --surface: #ffffff;
+  --surface-2: #f1f3f6;
+  --fg: #111827;
+  --muted: #5b6474;
+  --line: #e2e6ec;
+  --brand: #0b6e63;
+  --brand-hover: #095a51;
+  --brand-fg: #ffffff;
+  --brand-soft: #e3f3f0;
+  --accent: #c9822b;
+  --accent-soft: #fbf1e3;
+  --danger: #b42318;
+  --danger-soft: #fdecea;
+  --success: #1a7f45;
+  --success-soft: #e6f5ec;
+  --warning: #8a5a00;
+  --warning-soft: #fff4d6;
+  --info: #1f5fbf;
+  --info-soft: #e8f0fc;
+  --ring: #0b6e63;
+  color-scheme: light;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --bg: #0d1117;
+    --surface: #151b23;
+    --surface-2: #1c232d;
+    --fg: #e8ecf1;
+    --muted: #9aa4b2;
+    --line: #2a333f;
+    --brand: #2bb3a3;
+    --brand-hover: #3fc7b7;
+    --brand-fg: #04201d;
+    --brand-soft: #0f2e2a;
+    --accent: #e0a252;
+    --accent-soft: #33260f;
+    --danger: #ff7b72;
+    --danger-soft: #3a1513;
+    --success: #4ccf83;
+    --success-soft: #11301f;
+    --warning: #f2c14e;
+    --warning-soft: #33280d;
+    --info: #7ab0ff;
+    --info-soft: #132741;
+    --ring: #3fc7b7;
+    color-scheme: dark;
   }
 }
 
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-brand: var(--brand);
+  --color-brand-hover: var(--brand-hover);
+  --color-brand-fg: var(--brand-fg);
+  --color-brand-soft: var(--brand-soft);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-warning: var(--warning);
+  --color-warning-soft: var(--warning-soft);
+  --color-info: var(--info);
+  --color-info-soft: var(--info-soft);
+  --color-ring: var(--ring);
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+}
+
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }
