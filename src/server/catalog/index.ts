@@ -98,7 +98,7 @@ export function noBlockingOverlap(vehicleIdCol: unknown, from: Date, to: Date, n
     LEFT JOIN reservations r ON r.id = b.reservation_id
     WHERE b.vehicle_id = ${vehicleIdCol}
       AND b.period && tstzrange(${from.toISOString()}::timestamptz, ${to.toISOString()}::timestamptz, '[)')
-      AND NOT (r.status = 'PENDING' AND r.hold_expires_at <= ${now.toISOString()}::timestamptz)
+      AND (r.id IS NULL OR NOT (r.status = 'PENDING' AND r.hold_expires_at <= ${now.toISOString()}::timestamptz))
   )`;
 }
 
@@ -279,7 +279,7 @@ export async function getVehicleAvailability(
     LEFT JOIN reservations r ON r.id = b.reservation_id
     WHERE b.vehicle_id = ${vehicleId}
       AND b.period && tstzrange(${from.toISOString()}::timestamptz, ${to.toISOString()}::timestamptz, '[)')
-      AND NOT (r.status = 'PENDING' AND r.hold_expires_at <= ${now.toISOString()}::timestamptz)
+      AND (r.id IS NULL OR NOT (r.status = 'PENDING' AND r.hold_expires_at <= ${now.toISOString()}::timestamptz))
     ORDER BY lower(b.period)
   `);
   const blocks = rows.map((r) => ({ start: new Date(r.start), end: new Date(r.end), kind: r.kind }));
