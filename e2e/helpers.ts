@@ -1,9 +1,11 @@
 import { type Browser, type Page, expect } from "@playwright/test";
 import { randomUUID } from "node:crypto";
 
+// Seed accounts (src/server/db/seed.ts SEED_PASSWORDS; test data only).
 export const SEED = {
-  admin: { email: "admin@driveeasy.test", password: process.env.SEED_ADMIN_PASSWORD ?? "" },
-  customer: { email: "customer@driveeasy.test", password: process.env.SEED_CUSTOMER_PASSWORD ?? "" },
+  admin: { email: "admin@driveeasy.test", password: "DriveEasy-Admin-1" },
+  customer: { email: "customer@driveeasy.test", password: "DriveEasy-Customer-1" },
+  customer2: { email: "customer2@driveeasy.test", password: "DriveEasy-Customer-2" },
 };
 
 export const PASSWORD = "Qa-Passw0rd!2026";
@@ -27,21 +29,20 @@ export async function register(page: Page, opts: { email?: string; name?: string
   const email = opts.email ?? newEmail();
   const password = opts.password ?? PASSWORD;
   await page.goto("/register");
-  await page.getByLabel(/name/i).first().fill(opts.name ?? "QA Customer");
-  await page.getByLabel(/email/i).fill(email);
-  const pw = page.getByLabel(/password/i);
-  await pw.first().fill(password);
-  if ((await pw.count()) > 1) await pw.nth(1).fill(password);
-  await page.getByRole("button", { name: /register|sign up|create account/i }).click();
+  await page.getByLabel("Full name").fill(opts.name ?? "QA Customer");
+  await page.getByLabel("Email").fill(email);
+  await page.getByLabel("Password", { exact: true }).fill(password);
+  await page.getByLabel("Confirm password").fill(password);
+  await page.getByTestId("register-submit").click();
   await expect(page).not.toHaveURL(/\/register/);
   return { email, password };
 }
 
 export async function login(page: Page, email: string, password: string) {
   await page.goto("/login");
-  await page.getByLabel(/email/i).fill(email);
-  await page.getByLabel(/password/i).first().fill(password);
-  await page.getByRole("button", { name: /log ?in|sign ?in/i }).click();
+  await page.getByLabel("Email").fill(email);
+  await page.getByLabel("Password", { exact: true }).fill(password);
+  await page.getByTestId("login-submit").click();
   await expect(page).not.toHaveURL(/\/login/);
 }
 
