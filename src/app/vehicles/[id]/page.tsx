@@ -16,26 +16,35 @@ import { VehicleSpecs } from "@/components/vehicles/vehicle-specs";
 import { addMonths } from "@/lib/calendar";
 import { formatAED, formatDateTime, utcToZonedDate, zonedLocalToUtc } from "@/lib/format";
 import { defaultTrip, parseSearchParams, resolveTrip, toQuery, tripQuery } from "@/lib/search-params";
-import { getVehicle, getVehicleAvailability, listBranches } from "@/server/catalog";
+import { getVehicle, getVehicleAvailability, listBranches, type VehicleDetails as VehicleDetailsData } from "@/server/catalog";
 import { isDomainError } from "@/server/errors";
 import { quote } from "@/server/pricing";
 
-export default function VehiclePage(props: PageProps<"/vehicles/[id]">) {
+// Unknown ids must 404 with a real status, so the lookup runs before streaming.
+export const instant = false;
+
+export default async function VehiclePage({ params, searchParams }: PageProps<"/vehicles/[id]">) {
+  await connection();
+  const { id } = await params;
+  const vehicle = await getVehicle(id);
+  if (!vehicle || vehicle.status === "RETIRED") notFound();
   return (
     <Container className="py-6 sm:py-8">
       <Suspense fallback={<PageSkeleton label="Loading car" />}>
-        <VehicleDetails {...props} />
+        <VehicleDetails vehicle={vehicle} searchParams={searchParams} />
       </Suspense>
     </Container>
   );
 }
 
-async function VehicleDetails({ params, searchParams }: PageProps<"/vehicles/[id]">) {
-  await connection();
-  const { id } = await params;
+async function VehicleDetails({
+  vehicle,
+  searchParams,
+}: {
+  vehicle: VehicleDetailsData;
+  searchParams: PageProps<"/vehicles/[id]">["searchParams"];
+}) {
   const raw = await searchParams;
-  const vehicle = await getVehicle(id);
-  if (!vehicle || vehicle.status === "RETIRED") notFound();
 
   const sp = parseSearchParams(raw);
   const branches = await listBranches();
@@ -112,7 +121,13 @@ async function VehicleDetails({ params, searchParams }: PageProps<"/vehicles/[id
               Picked up at {vehicle.branch.name}, {vehicle.branch.city}
             </p>
           </div>
-          <VehiclePhoto src={vehicle.photoUrls[0]} alt={`${title} photo`} priority sizes="(min-width: 1024px) 60vw, 100vw" />
+          <VehiclePhoto
+            src={vehicle.photoUrls[0]}
+            alt={`${title} photo`}
+            priority
+            sizes="(min-width: 1024px) 60vw, 100vw"
+            transitionName={`car-${vehicle.id}`}
+          />
           {vehicle.photoUrls.length > 1 && (
             <ul className="grid grid-cols-3 gap-2 sm:grid-cols-4">
               {vehicle.photoUrls.slice(1, 5).map((src, i) => (

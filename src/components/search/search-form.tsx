@@ -112,7 +112,7 @@ export function SearchForm({
             }
           }}
         />
-        {differentReturn && (
+        <div className="reveal-rows" data-open={differentReturn} aria-hidden={!differentReturn}>
           <div>
             <Label htmlFor={`${id}-rb`}>Return branch</Label>
             <Select
@@ -125,7 +125,7 @@ export function SearchForm({
             </Select>
             <p className="mt-1 text-xs text-muted">A one-way fee applies when you return to a different branch.</p>
           </div>
-        )}
+        </div>
       </div>
 
       <fieldset className="grid grid-cols-[1fr_7rem] gap-2">

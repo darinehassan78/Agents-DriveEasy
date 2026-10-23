@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 250" role="img" aria-label="Luxury car illustration">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#eef6f5"/><stop offset="1" stop-color="#dfe9ee"/></linearGradient>
+    <linearGradient id="body" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1f2937" stop-opacity="0.95"/><stop offset="1" stop-color="#1f2937"/></linearGradient>
+  </defs>
+  <rect width="420" height="250" fill="url(#bg)"/>
+  <ellipse cx="210" cy="188" rx="170" ry="12" fill="#000" opacity="0.12"/>
+  <path d="M40 150 L64 116 Q76 102 100 100 L150 96 Q182 70 232 68 L276 70 Q306 74 328 98 L364 108 Q378 114 378 128 L378 150 Z" fill="url(#body)" transform="translate(0 30)"/>
+  <rect x="40" y="172" width="340" height="10" rx="5" fill="#111827" opacity="0.25"/>
+  <circle cx="122" cy="182" r="26" fill="#111827"/><circle cx="122" cy="182" r="12" fill="#d1d5db"/>
+  <circle cx="298" cy="182" r="26" fill="#111827"/><circle cx="298" cy="182" r="12" fill="#d1d5db"/>
+  <rect x="340" y="140" width="16" height="8" rx="3" fill="#fde68a"/>
+</svg>

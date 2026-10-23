@@ -86,18 +86,357 @@ body {
   font-family: var(--font-sans);
 }
 
+/* Focus rings are instant: never transitioned. */
 :focus-visible {
   outline: 2px solid var(--ring);
   outline-offset: 2px;
+  transition: none;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    transition-duration: 0.01ms !important;
+/* ---------------------------------------------------------------------------
+   Motion system (advanced-web-animation guide). Calm, confident, fast.
+   Only transform/opacity animate. Hidden initial states are gated behind
+   .js-anim (set by an inline script in <head>) so content shows without JS.
+   ------------------------------------------------------------------------- */
+:root {
+  --dur-instant: 80ms;
+  --dur-fast: 160ms;
+  --dur-base: 240ms;
+  --dur-slow: 400ms;
+  --dur-slower: 640ms;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in: cubic-bezier(0.55, 0, 1, 0.45);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --rise-sm: 8px;
+  --rise-md: 16px;
+  --rise-lg: 32px;
+  --stagger: 60ms;
+  --press-scale: 0.98;
+  --lift: -4px;
+}
+
+/* Small screens: shorter distances, quicker moves. */
+@media (max-width: 639px) {
+  :root {
+    --rise-md: 8px;
+    --rise-lg: 16px;
+    --dur-slow: 320ms;
+    --dur-slower: 512ms;
+    --lift: -2px;
   }
+}
+
+/* Reduced motion: movement becomes a plain fade (opacity still animates). */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --rise-sm: 0px;
+    --rise-md: 0px;
+    --rise-lg: 0px;
+    --press-scale: 1;
+    --lift: 0px;
+    --stagger: 0ms;
+  }
+  html {
+    scroll-behavior: auto !important;
+  }
+  .motion-move {
+    animation: none !important;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(var(--rise-md));
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes rise-x {
+  from {
+    opacity: 0;
+    transform: translateX(var(--rise-lg));
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes fade-out {
+  to {
+    opacity: 0;
+  }
+}
+@keyframes shake {
+  25%,
+  75% {
+    transform: translateX(-4px);
+  }
+  50% {
+    transform: translateX(4px);
+  }
+}
+@keyframes shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+@keyframes draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Page-load sequence (hero). Total < 1.2s; the booking card is usable at once. */
+.js-anim .reveal {
+  animation: rise var(--dur-slower) var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * var(--stagger) + 100ms);
+}
+.js-anim .reveal-x {
+  animation: rise-x var(--dur-slower) var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * var(--stagger) + 100ms);
+}
+
+/* Scroll reveal, once. CSS scroll timelines where supported, else IO adds .in. */
+.scroll-reveal {
+  transition:
+    opacity var(--dur-slow) var(--ease-out),
+    transform var(--dur-slow) var(--ease-out);
+  transition-delay: calc(var(--i, 0) * var(--stagger));
+}
+.js-anim .scroll-reveal:not(.in) {
+  opacity: 0;
+  transform: translateY(var(--rise-md));
+}
+@supports (animation-timeline: view()) {
+  .js-anim .scroll-reveal:not(.in) {
+    opacity: 1;
+    transform: none;
+    animation: rise linear both;
+    animation-timeline: view();
+    animation-range: entry 5% cover 25%;
+  }
+}
+
+/* Buttons: instant press feedback, colour on hover, stable-width loading. */
+.btn {
+  transition:
+    transform var(--dur-instant) var(--ease-out),
+    background-color var(--dur-fast) var(--ease-out),
+    opacity var(--dur-fast) var(--ease-out);
+}
+.btn:active {
+  transform: scale(var(--press-scale));
+}
+.btn[aria-busy="true"] {
+  cursor: progress;
+}
+
+/* Form controls: smooth border/ring on focus; short shake when invalid. */
+.field-control {
+  transition:
+    border-color var(--dur-fast) var(--ease-out),
+    box-shadow var(--dur-fast) var(--ease-out);
+}
+.field-control[aria-invalid="true"] {
+  animation: shake 280ms var(--ease-in-out);
+}
+@media (prefers-reduced-motion: reduce) {
+  .field-control[aria-invalid="true"] {
+    animation: none;
+  }
+}
+
+/* Height reveal without animating height (grid rows). */
+.reveal-rows {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    grid-template-rows var(--dur-base) var(--ease-out),
+    opacity var(--dur-fast) var(--ease-out),
+    visibility 0s linear var(--dur-base);
+}
+.reveal-rows > * {
+  overflow: hidden;
+  min-height: 0;
+}
+.reveal-rows[data-open="true"] {
+  grid-template-rows: 1fr;
+  opacity: 1;
+  visibility: visible;
+  transition:
+    grid-template-rows var(--dur-base) var(--ease-out),
+    opacity var(--dur-base) var(--ease-out),
+    visibility 0s;
+}
+
+/* Cards that lift on hover: transform + a shadow layer whose opacity fades. */
+.lift-card {
+  position: relative;
+  isolation: isolate;
+  transition:
+    transform var(--dur-base) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out);
+}
+.lift-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  box-shadow:
+    0 18px 36px -14px rgb(0 0 0 / 0.28),
+    0 0 0 1px color-mix(in oklab, var(--brand) 30%, transparent);
+  opacity: 0;
+  transition: opacity var(--dur-base) var(--ease-out);
+  pointer-events: none;
+}
+.lift-card .lift-img {
+  transition: transform var(--dur-slow) var(--ease-out);
+}
+@media (hover: hover) and (pointer: fine) {
+  .lift-card:hover {
+    transform: translateY(var(--lift));
+  }
+  .lift-card:hover::after {
+    opacity: 1;
+  }
+  .lift-card:hover .lift-img {
+    transform: scale(1.04) translateX(2%);
+  }
+}
+.lift-card:active {
+  transform: scale(var(--press-scale));
+}
+
+/* Skeleton shimmer (fades only under reduced motion via the token-free fallback). */
+.shimmer {
+  background: linear-gradient(90deg, var(--surface-2) 0%, color-mix(in oklab, var(--surface-2) 60%, var(--surface)) 50%, var(--surface-2) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .shimmer {
+    animation: none;
+  }
+}
+
+/* Popovers, menus and dialogs: enter scale/fade from the trigger side, exit faster. */
+.pop-enter {
+  transform-origin: top;
+  animation: pop var(--dur-base) var(--ease-out) both;
+}
+.fade-enter {
+  animation: fade-in var(--dur-base) var(--ease-out) both;
+}
+dialog.sheet {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity var(--dur-base) var(--ease-out),
+    transform var(--dur-base) var(--ease-out),
+    display var(--dur-base) allow-discrete,
+    overlay var(--dur-base) allow-discrete;
+}
+dialog.sheet:not([open]) {
+  opacity: 0;
+  transform: translateY(var(--rise-sm)) scale(0.96);
+  transition-duration: var(--dur-fast);
+  transition-timing-function: var(--ease-in);
+}
+@starting-style {
+  dialog.sheet[open] {
+    opacity: 0;
+    transform: translateY(var(--rise-sm)) scale(0.96);
+  }
+}
+dialog.sheet::backdrop {
+  background: rgb(0 0 0 / 0.45);
+  transition:
+    opacity var(--dur-base) var(--ease-out),
+    display var(--dur-base) allow-discrete,
+    overlay var(--dur-base) allow-discrete;
+}
+dialog.sheet:not([open])::backdrop {
+  opacity: 0;
+}
+@starting-style {
+  dialog.sheet[open]::backdrop {
+    opacity: 0;
+  }
+}
+
+/* Sticky header gains a hairline + blur after the first 80px of scroll. */
+@supports (animation-timeline: scroll()) {
+  .site-header {
+    animation: header-solid linear both;
+    animation-timeline: scroll();
+    animation-range: 0 80px;
+  }
+  @keyframes header-solid {
+    from {
+      box-shadow: 0 0 0 0 transparent;
+    }
+    to {
+      box-shadow: 0 6px 20px -12px rgb(0 0 0 / 0.25);
+    }
+  }
+}
+
+/* Route transitions: cross-fade + small rise; car photo morphs card -> detail. */
+@view-transition {
+  navigation: auto;
+}
+::view-transition-old(root) {
+  animation: fade-out var(--dur-fast) var(--ease-in) both;
+}
+::view-transition-new(root) {
+  animation: rise var(--dur-base) var(--ease-out) both;
+}
+::view-transition-group(*) {
+  animation-duration: var(--dur-slow);
+  animation-timing-function: var(--ease-in-out);
+}
+
+/* One moment of delight: confirmed voucher checkmark draws once. */
+.check-draw path {
+  stroke-dasharray: 24;
+  stroke-dashoffset: 24;
+  animation: draw var(--dur-slow) var(--ease-out) 200ms forwards;
+}
+.js-anim .voucher-pop {
+  animation: pop var(--dur-slow) var(--ease-spring) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .check-draw path {
+    stroke-dashoffset: 0;
+    animation: none;
+  }
+}
+
+/* Toasts */
+.toast-enter {
+  animation: rise var(--dur-base) var(--ease-out) both;
 }
 
 /* Search filters: collapsible on mobile, always expanded on desktop. */

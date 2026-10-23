@@ -15,15 +15,17 @@ export default function HomePage() {
       <section className="relative overflow-hidden border-b border-line bg-gradient-to-b from-brand-soft to-bg">
         <Container className="grid gap-8 py-10 sm:py-14 lg:grid-cols-[1fr_28rem] lg:items-center lg:gap-12">
           <div>
-            <Badge tone="brand">Dubai · Abu Dhabi · Sharjah</Badge>
-            <h1 className="mt-4 text-4xl font-semibold tracking-tight text-balance sm:text-5xl">
+            <div className="reveal" style={{ "--i": 0 } as React.CSSProperties}>
+              <Badge tone="brand">Dubai · Abu Dhabi · Sharjah</Badge>
+            </div>
+            <h1 style={{ "--i": 1 } as React.CSSProperties} className="reveal mt-4 text-4xl font-semibold tracking-tight text-balance sm:text-5xl">
               Rent a car across the UAE, the easy way.
             </h1>
-            <p className="mt-4 max-w-xl text-lg text-muted">
+            <p style={{ "--i": 2 } as React.CSSProperties} className="reveal mt-4 max-w-xl text-lg text-muted">
               Clear prices in AED with VAT included at checkout, free cancellation up to 48 hours before pick-up,
               and a digital voucher you show at the counter.
             </p>
-            <ul className="mt-6 grid max-w-xl gap-3 text-sm sm:grid-cols-3">
+            <ul style={{ "--i": 3 } as React.CSSProperties} className="reveal mt-6 grid max-w-xl gap-3 text-sm sm:grid-cols-3">
               {["No hidden fees", "Airport branches", "One-way rentals"].map((t) => (
                 <li key={t} className="flex items-center gap-2">
                   <svg viewBox="0 0 24 24" className="size-5 text-brand" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden="true">
@@ -34,7 +36,7 @@ export default function HomePage() {
               ))}
             </ul>
           </div>
-          <div className="rounded-2xl border border-line bg-surface p-5 shadow-lg sm:p-6">
+          <div style={{ "--i": 2 } as React.CSSProperties} className="reveal-x rounded-2xl border border-line bg-surface p-5 shadow-lg sm:p-6">
             <h2 className="mb-4 text-lg font-semibold">Find your car</h2>
             <Suspense fallback={<SearchSkeleton />}>
               <HomeSearch />
@@ -58,7 +60,7 @@ export default function HomePage() {
             ["Add extras", "Child seat, GPS, an additional driver or full insurance cover."],
             ["Show your voucher", "Pay online, then show the QR voucher and your licence at pick-up."],
           ].map(([t, d], i) => (
-            <div key={t} className="rounded-xl border border-line bg-surface p-5">
+            <div key={t} className="scroll-reveal rounded-xl border border-line bg-surface p-5" style={{ "--i": i } as React.CSSProperties}>
               <span className="grid size-8 place-items-center rounded-full bg-brand text-sm font-semibold text-brand-fg">{i + 1}</span>
               <h3 className="mt-3 font-semibold">{t}</h3>
               <p className="mt-1 text-sm text-muted">{d}</p>
@@ -94,11 +96,11 @@ async function Categories() {
   if (categories.length === 0) return null;
   return (
     <ul className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-      {categories.map((c) => (
-        <li key={c.id}>
+      {categories.map((c, i) => (
+        <li key={c.id} className="scroll-reveal" style={{ "--i": i % 4 } as React.CSSProperties}>
           <Link
             href={`/search?category=${c.id}`}
-            className="block h-full rounded-xl border border-line bg-surface p-5 transition-shadow hover:shadow-md"
+            className="lift-card block h-full rounded-xl border border-line bg-surface p-5"
           >
             <h3 className="font-semibold">{c.name}</h3>
             <p className="mt-1 line-clamp-2 text-sm text-muted">{c.description}</p>

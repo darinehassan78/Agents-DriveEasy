@@ -29,10 +29,10 @@ export function VehicleCard({ v, href, bookHref }: { v: VehicleCardData; href: s
     <article
       data-testid="vehicle-card"
       data-vehicle-id={v.id}
-      className="flex flex-col overflow-hidden rounded-xl border border-line bg-surface shadow-sm transition-shadow hover:shadow-md"
+      className="lift-card flex flex-col rounded-xl border border-line bg-surface shadow-sm"
     >
       <Link href={href} className="block p-3 pb-0" tabIndex={-1} aria-hidden="true">
-        <VehiclePhoto src={v.photoUrl} alt={`${title} photo`} />
+        <VehiclePhoto src={v.photoUrl} alt={`${title} photo`} transitionName={`car-${v.id}`} imgClassName="lift-img" />
       </Link>
       <div className="flex flex-1 flex-col gap-0 p-4">
         <div className="flex items-start justify-between gap-3">

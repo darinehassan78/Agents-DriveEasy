@@ -2,7 +2,7 @@ import type { ComponentProps, ReactNode } from "react";
 import { cn } from "@/lib/cn";
 
 const control =
-  "block w-full rounded-lg border border-line bg-surface px-3 text-base sm:text-sm text-fg placeholder:text-muted " +
+  "field-control block w-full rounded-lg border border-line bg-surface px-3 text-base sm:text-sm text-fg placeholder:text-muted " +
   "focus:border-brand focus:outline-none focus:ring-2 focus:ring-ring/30 disabled:opacity-60 " +
   "aria-[invalid=true]:border-danger";
 

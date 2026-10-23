@@ -8,19 +8,27 @@ export function VehiclePhoto({
   className,
   priority,
   sizes = "(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw",
+  transitionName,
+  imgClassName,
 }: {
   src?: string | null;
   alt: string;
   className?: string;
   priority?: boolean;
   sizes?: string;
+  /** view-transition-name shared between the result card and the detail page. */
+  transitionName?: string;
+  imgClassName?: string;
 }) {
   return (
-    <div className={cn("relative aspect-[16/10] overflow-hidden rounded-lg bg-surface-2", className)}>
+    <div
+      className={cn("relative aspect-[16/10] overflow-hidden rounded-lg bg-surface-2", className)}
+      style={transitionName ? { viewTransitionName: transitionName } : undefined}
+    >
       {src ? (
-        <Image src={src} alt={alt} fill sizes={sizes} className="object-cover" priority={priority} unoptimized />
+        <Image src={src} alt={alt} fill sizes={sizes} className={cn("object-cover", imgClassName)} priority={priority} unoptimized />
       ) : (
-        <div className="absolute inset-0 grid place-items-center text-muted" role="img" aria-label={alt}>
+        <div className={cn("absolute inset-0 grid place-items-center text-muted", imgClassName)} role="img" aria-label={alt}>
           <svg viewBox="0 0 120 60" className="w-2/3 max-w-56 opacity-60" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinejoin="round" aria-hidden="true">
             <path d="M8 40 L14 26 Q17 20 24 19 L44 17 Q52 8 66 8 L82 9 Q92 10 100 19 L110 22 Q114 24 114 30 L114 40 Z" />
             <circle cx="32" cy="42" r="8" fill="var(--surface-2)" />

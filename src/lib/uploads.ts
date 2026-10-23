@@ -4,7 +4,7 @@ import { getFileStorage } from "@/server/storage";
 
 // Private uploads (driving licences, damage photos). Keys encode who may read them:
 //   licences/<userId>/<uuid>.<ext>       owner + admins
-//   damage/<reservationId>/<uuid>.<ext>  the reservation's customer + admins
+//   damage/<reservationId>/<uuid>.<ext>  admins only
 // Files are served only by src/app/files/[...key]/route.ts.
 
 export const MAX_UPLOAD_BYTES = 5 * 1024 * 1024;

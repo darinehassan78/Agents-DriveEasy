@@ -10,23 +10,26 @@ import { Container } from "@/components/ui/page-header";
 import { PageSkeleton } from "@/components/ui/skeleton";
 import { formatAED, formatTime, timeZoneLabel, utcToZonedDate } from "@/lib/format";
 import { defaultTrip } from "@/lib/search-params";
-import { getBranch, listBranches } from "@/server/catalog";
+import { getBranch, listBranches, type Branch } from "@/server/catalog";
 
-export default function BranchPage({ params }: PageProps<"/branches/[id]">) {
+// Unknown ids must 404 with a real status, so the lookup runs before streaming.
+export const instant = false;
+
+export default async function BranchPage({ params }: PageProps<"/branches/[id]">) {
+  await connection();
+  const { id } = await params;
+  const branch = await getBranch(id);
+  if (!branch || !branch.isActive) notFound();
   return (
     <Container className="py-6 sm:py-8">
       <Suspense fallback={<PageSkeleton label="Loading branch" />}>
-        <BranchDetails params={params} />
+        <BranchDetails branch={branch} />
       </Suspense>
     </Container>
   );
 }
 
-async function BranchDetails({ params }: { params: PageProps<"/branches/[id]">["params"] }) {
-  await connection();
-  const { id } = await params;
-  const branch = await getBranch(id);
-  if (!branch || !branch.isActive) notFound();
+async function BranchDetails({ branch }: { branch: Branch }) {
   const branches = await listBranches();
   const now = new Date();
   const trip = defaultTrip(now, branch.timeZone);
