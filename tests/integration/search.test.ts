@@ -160,7 +160,7 @@ describe.skipIf(!ready)("vehicle search", () => {
       const busy = cal.days.filter((d) => !d.available).map((d) => d.date);
       expect(busy).toEqual(["2027-03-10", "2027-03-11", "2027-03-12", "2027-03-16"]);
       expect(cal.days.find((d) => d.date === "2027-03-13")?.available).toBe(true);
-      expect(cal.blocked.map((b) => b.kind)).toEqual(["reservation", "maintenance"]);
+      expect(cal.blocks.map((b) => b.kind)).toEqual(["reservation", "maintenance"]);
       expect(JSON.stringify(cal)).not.toContain(user.id);
     });
 

@@ -6,7 +6,7 @@ Status: OPEN -> FIXED (owner says so) -> VERIFIED (qa-agent retested) / WONTFIX.
 | ID | Sev | Title | Owner | Status |
 |---|---|---|---|---|
 | BUG-001 | S1 | `pnpm build` fails: TS2366 in src/server/storage/index.ts | app-agent | VERIFIED |
-| BUG-002 | S1 | Maintenance blocks ignored by search and availability calendar (SQL NULL logic) | db-agent | OPEN |
+| BUG-002 | S1 | Maintenance blocks ignored by search and availability calendar (SQL NULL logic) | db-agent | VERIFIED |
 
 ---
 
@@ -25,4 +25,4 @@ Status: OPEN -> FIXED (owner says so) -> VERIFIED (qa-agent retested) / WONTFIX.
 - **Expected:** vehicle excluded from search; maintenance days marked unavailable; `blocked` lists the maintenance range.
 - **Actual:** vehicle is listed; days show available. `noBlockingOverlap()` and the calendar query use `LEFT JOIN reservations r ... AND NOT (r.status = 'PENDING' AND r.hold_expires_at <= now)`. For maintenance rows `r` is NULL, so the predicate is `NOT (NULL)` = NULL and the row is filtered out. Verified on driveeasy_test: 3 maintenance blocks, 0 pass the filter.
 - **Fix hint:** `AND (r.id IS NULL OR NOT (r.status = 'PENDING' AND r.hold_expires_at <= now))` (or `IS NOT TRUE`). Same in `getVehicleAvailability`.
-- **Status:** OPEN
+- **Status:** VERIFIED (fixed in 9612b32; search.test.ts 10/10)

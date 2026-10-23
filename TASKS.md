@@ -34,12 +34,12 @@ Add tasks you discover. Bugs go in `docs/BUGS.md` and get a task here.
 
 ## QA (qa-agent)
 - [x] Q1 Test plan + harness (test DB reset, seeding, helpers) — DONE (qa-agent): tests/PLAN.md, `pnpm test:db:reset`, `pnpm test:integration`, e2e on :3100 vs driveeasy_test
-- [ ] Q2 Auth: register, login, logout, authorisation, admin permissions
-- [ ] Q3 Search, branches, date ranges, filters, availability calendars
+- [ ] Q2 Auth: register, login, logout, authorisation, admin permissions — DOING (qa-agent): integration 6/6; e2e + admin authz pending UI
+- [ ] Q3 Search, branches, date ranges, filters, availability calendars — DOING (qa-agent): integration 10/10 passing; e2e pending UI
 - [ ] Q4 Full rental: search → payment → voucher → check-out → return
 - [ ] Q5 Concurrency: two sessions reserve overlapping dates at once, exactly one succeeds — DOING (qa-agent): DB-level race x50 passing; waiting on reserve() (D6)
 - [ ] Q6 Back-to-back rentals; expired holds and automatic release — DOING (qa-agent): boundary tests passing; waiting on D10
-- [ ] Q7 Pricing: daily rates, extras, one-way fee, VAT, late return, deposit
+- [ ] Q7 Pricing: daily rates, extras, one-way fee, VAT, late return, deposit — DOING (qa-agent): integration 26/26 passing; tamper e2e pending
 - [ ] Q8 Payments: success, failure, cancel, retry, refund, deposit release, duplicate webhooks
 - [ ] Q9 Cross-user access: reservations, vouchers, licence uploads
 - [ ] Q10 Migrations on a clean database; production build (`pnpm build`) — DOING (qa-agent): migrations test passing
