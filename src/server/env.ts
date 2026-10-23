@@ -4,7 +4,7 @@ import { z } from "zod";
 // require changing these values (see .env.example).
 const schema = z.object({
   NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
-  APP_URL: z.url().default("http://localhost:3000"),
+  APP_URL: z.url().default("http://localhost:3300"),
 
   DATABASE_URL: z.string().min(1),
   /** Direct (non-pooled) connection used for migrations; falls back to DATABASE_URL. */
@@ -15,10 +15,10 @@ const schema = z.object({
   LOG_LEVEL: z.enum(["debug", "info", "warn", "error"]).default("info"),
 
   BETTER_AUTH_SECRET: z.string().min(32),
-  BETTER_AUTH_URL: z.url().default("http://localhost:3000"),
+  BETTER_AUTH_URL: z.url().default("http://localhost:3300"),
 
   PAYMENT_PROVIDER: z.enum(["fake", "stripe"]).default("fake"),
-  PAYMENT_WEBHOOK_URL: z.url().default("http://localhost:3000/api/webhooks/payments"),
+  PAYMENT_WEBHOOK_URL: z.url().default("http://localhost:3300/api/webhooks/payments"),
   PAYMENT_WEBHOOK_SECRET: z.string().min(16),
   FAKE_PAYMENT_DUPLICATE_WEBHOOKS: z.stringbool().default(false),
   STRIPE_SECRET_KEY: z.string().optional(),

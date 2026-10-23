@@ -17,7 +17,7 @@ Need a change in a file you don't own? Message its owner. Don't edit it yourself
 ## Rules for working in one folder
 - Read `AGENTS.md`: this Next.js version differs from training data. Check `node_modules/next/dist/docs/` before writing Next.js code.
 - Commit your own work often, staging explicit paths only (`git add <your paths>`), never `git add -A`. If `index.lock` exists, wait and retry.
-- One `next dev` at a time, on port 3000. Check whether http://localhost:3000 responds before starting one, and never kill a server you didn't start.
+- One `next dev` at a time, on port 3300. Check whether http://localhost:3300 responds before starting one, and never kill a server you didn't start.
 - `driveeasy_dev` is for development and seed data. `driveeasy_test` is for automated tests (QA may reset it).
 - **No cloud accounts, logins or deploys.** Cloud-only work (Vercel, Neon, Blob, real payment provider) is coded behind the existing interfaces and marked BLOCKED in TASKS.md until the user provides links.
 
