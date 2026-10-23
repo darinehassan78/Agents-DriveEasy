@@ -3,7 +3,7 @@ import { config } from "dotenv";
 
 // E2E runs against a production build (`next build` + `next start`) on its own
 // port, wired to driveeasy_test, so it never touches driveeasy_dev or the
-// shared `next dev` on :3000. Set E2E_BASE_URL to test an already-running
+// shared `next dev` on :3300. Set E2E_BASE_URL to test an already-running
 // server instead (it must use driveeasy_test).
 config({ path: ".env.local", quiet: true });
 

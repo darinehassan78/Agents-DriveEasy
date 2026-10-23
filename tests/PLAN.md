@@ -23,7 +23,7 @@ provider and local file storage. No cloud accounts. Vercel tests are BLOCKED (X4
   (one shared DB). Tests that need special data create it themselves (unique emails / plates).
 - Playwright: `playwright.config.ts` starts `pnpm test:db:reset && pnpm build && pnpm start -p 3100`
   with `DATABASE_URL`=test DB and URLs on :3100, so it never touches the shared `next dev`
-  on :3000 or `driveeasy_dev`. `E2E_SKIP_BUILD=1` reuses the last build, `E2E_BASE_URL`
+  on :3300 or `driveeasy_dev`. `E2E_SKIP_BUILD=1` reuses the last build, `E2E_BASE_URL`
   targets an already running test server. `reuseExistingServer` is on locally.
 - Projects: `chromium` (all), `firefox` + `webkit` (tests tagged `@cross-browser`),
   `mobile-chrome` (Pixel 7) + `mobile-safari` (iPhone 14) (tests tagged `@mobile`).
