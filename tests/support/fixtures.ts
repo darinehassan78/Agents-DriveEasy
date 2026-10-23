@@ -46,13 +46,36 @@ export async function makeCategory(opts: { depositFils?: number; dailyRateFils?:
   return cat;
 }
 
-export async function makeVehicle(opts: { branchId?: string; categoryId?: string; dailyRateFils?: number } = {}) {
+export interface VehicleOpts {
+  branchId?: string;
+  categoryId?: string;
+  dailyRateFils?: number;
+  make?: string;
+  model?: string;
+  transmission?: "AUTOMATIC" | "MANUAL";
+  fuelType?: "PETROL" | "DIESEL" | "HYBRID" | "ELECTRIC";
+  seats?: number;
+  status?: "AVAILABLE" | "RESERVED" | "ON_RENT" | "MAINTENANCE" | "RETIRED";
+}
+
+export async function makeVehicle(opts: VehicleOpts = {}) {
   const branchId = opts.branchId ?? (await makeBranch()).id;
   const categoryId = opts.categoryId ?? (await makeCategory({ dailyRateFils: opts.dailyRateFils ?? 20000 })).id;
   const v = await one<{ id: string; plate: string }>(
-    `insert into vehicles (branch_id, category_id, make, model, year, plate, vin, transmission, fuel_type, seats)
-     values ($1, $2, 'Toyota', 'Corolla', 2024, $3, $4, 'AUTOMATIC', 'PETROL', 5) returning id, plate`,
-    [branchId, categoryId, uniqueCode("P"), uniqueVin()],
+    `insert into vehicles (branch_id, category_id, make, model, year, plate, vin, transmission, fuel_type, seats, status)
+     values ($1, $2, $5, $6, 2024, $3, $4, $7, $8, $9, $10) returning id, plate`,
+    [
+      branchId,
+      categoryId,
+      uniqueCode("P"),
+      uniqueVin(),
+      opts.make ?? "Toyota",
+      opts.model ?? "Corolla",
+      opts.transmission ?? "AUTOMATIC",
+      opts.fuelType ?? "PETROL",
+      opts.seats ?? 5,
+      opts.status ?? "AVAILABLE",
+    ],
   );
   return { ...v, branchId, categoryId };
 }
