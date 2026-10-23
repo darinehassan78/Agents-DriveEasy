@@ -13,15 +13,19 @@
     "typecheck": "next typegen && tsc --noEmit",
     "db:setup": "tsx scripts/setup-local-db.mts",
     "db:generate": "drizzle-kit generate",
-    "db:migrate": "drizzle-kit migrate",
+    "db:migrate": "tsx scripts/migrate.mts",
     "db:studio": "drizzle-kit studio",
     "job": "tsx scripts/run-job.mts",
     "jobs:release-expired-holds": "tsx scripts/run-job.mts release-expired-holds",
     "test:integration": "vitest run --config tests/vitest.config.mts",
     "test:db:reset": "tsx tests/support/reset-db.mts",
-    "test:all": "vitest run && vitest run --config tests/vitest.config.mts && playwright test"
+    "test:all": "vitest run && vitest run --config tests/vitest.config.mts && playwright test",
+    "db:migrate:test": "tsx scripts/migrate.mts --test",
+    "db:seed": "tsx scripts/seed.mts",
+    "db:reset": "tsx scripts/reset-db.mts"
   },
   "dependencies": {
+    "@vercel/blob": "^2.8.2",
     "better-auth": "^1.7.12",
     "drizzle-orm": "^0.45.4",
     "next": "16.4.2",
@@ -29,6 +33,7 @@
     "qrcode": "^1.5.4",
     "react": "19.3.0",
     "react-dom": "19.3.0",
+    "server-only": "^0.0.1",
     "zod": "^4.6.7"
   },
   "devDependencies": {
