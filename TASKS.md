@@ -4,20 +4,20 @@ Status: TODO / DOING / DONE / BLOCKED. Put your name on a task when you start it
 Add tasks you discover. Bugs go in `docs/BUGS.md` and get a task here.
 
 ## Database Engine (db-agent)
-- [ ] D1 Schema + migrations: users (Better Auth compatible), driver_profiles, branches, vehicle_categories, vehicles, vehicle_features, vehicle_feature_map, pricing_rules, extras, reservations, reservation_extras, payments, deposits, rental_agreements, damage_reports, maintenance_blocks, audit_logs. FKs, checks, indexes, cascades, unique plate/VIN/branch code.
-- [ ] D2 Overlap exclusion constraint covering reservations + maintenance blocks (see docs/TEAM.md)
-- [ ] D3 Better Auth server config (email + password, roles) on the Drizzle schema
-- [ ] D4 Pricing engine (rates, days, extras, one-way fee, VAT, deposit, late return) + unit tests
-- [ ] D5 Availability search + per-vehicle availability calendar queries
-- [ ] D6 Reserve transaction (lock vehicle, expire stale holds, check, hold, price, create PENDING), idempotency keys
-- [ ] D7 Payment + deposit flow: confirm only after verified payment and deposit hold; webhook route with signature check and dedupe; refund, deposit release/capture
-- [ ] D8 Modify dates / cancel per policy (transactional)
-- [ ] D9 Check-out / check-in: rental agreement with mileage + fuel, late charges, damage reports
-- [ ] D10 Idempotent release-expired-holds endpoint protected by CRON_SECRET + local command + vercel.json cron
-- [ ] D11 Seed data: branches, categories, vehicles, features, extras, pricing rules, future reservations, admin + customer users
-- [ ] D12 Audit logs for admin and reservation state changes; structured server logs
-- [ ] D13 Real-provider adapters behind interfaces: Stripe (test mode), Vercel Blob storage (coordinate with app-agent). Settings-only switch.
-- [ ] D14 README: local setup, env vars, migrations, testing, Vercel deployment
+- [x] D1 Schema + migrations: users (Better Auth compatible), driver_profiles, branches, vehicle_categories, vehicles, vehicle_features, vehicle_feature_map, pricing_rules, extras, reservations, reservation_extras, payments, deposits, rental_agreements, damage_reports, maintenance_blocks, audit_logs. FKs, checks, indexes, cascades, unique plate/VIN/branch code. — DONE (db-agent)
+- [x] D2 Overlap exclusion constraint covering reservations + maintenance blocks (see docs/TEAM.md) — DONE (db-agent)
+- [x] D3 Better Auth server config (email + password, roles) on the Drizzle schema — DONE (db-agent)
+- [ ] D4 Pricing engine (rates, days, extras, one-way fee, VAT, deposit, late return) + unit tests — DOING (db-agent): code landed, tests in progress
+- [x] D5 Availability search + per-vehicle availability calendar queries — DONE (db-agent)
+- [ ] D6 Reserve transaction (lock vehicle, expire stale holds, check, hold, price, create PENDING), idempotency keys — DOING (db-agent): code landed, tests in progress
+- [ ] D7 Payment + deposit flow: confirm only after verified payment and deposit hold; webhook route with signature check and dedupe; refund, deposit release/capture — DOING (db-agent): code landed, tests in progress
+- [ ] D8 Modify dates / cancel per policy (transactional) — DOING (db-agent): code landed, tests in progress
+- [ ] D9 Check-out / check-in: rental agreement with mileage + fuel, late charges, damage reports — DOING (db-agent): code landed, tests in progress
+- [ ] D10 Idempotent release-expired-holds endpoint protected by CRON_SECRET + local command + vercel.json cron — DOING (db-agent): code landed, tests in progress
+- [x] D11 Seed data: branches, categories, vehicles, features, extras, pricing rules, future reservations, admin + customer users — DONE (db-agent)
+- [x] D12 Audit logs for admin and reservation state changes; structured server logs — DONE (db-agent)
+- [ ] D13 Real-provider adapters behind interfaces: Stripe (test mode), Vercel Blob storage (coordinate with app-agent). Settings-only switch. — DOING (db-agent): code landed, tests in progress
+- [ ] D14 README: local setup, env vars, migrations, testing, Vercel deployment — DOING (db-agent): code landed, tests in progress
 
 ## App (app-agent)
 - [ ] A1 Design system, layout, navigation, responsive shell, loading/error/empty states — DOING (app-agent)
